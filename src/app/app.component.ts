@@ -1,14 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from './services/product.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';  // 'of' をrxjsからインポート
+import { FormsModule } from '@angular/forms'; 
+import { BrowserModule } from '@angular/platform-browser';
 
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule  // ここで FormsModule をインポート
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  products$: Observable<any[]>;
+  products$: Observable<any[]> = of([]);  // 初期化
   searchQuery: string = '';
   selectedGenre: string = '書籍';  // 初期カテゴリー
   selectedStore: string = '新宿店';  // 初期店舗

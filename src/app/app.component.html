@@ -78,19 +78,48 @@
   <h1>T書店 在庫管理システム</h1>
 </header>
 
+<!-- app.component.html -->
 <div class="search-container">
-  <input type="text" [(ngModel)]="searchQuery" placeholder="本のタイトルや著者名を入力してください">
+  <input [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="検索..." class="search-input"/>
   
-  <select [(ngModel)]="selectedGenre">
+  <div class="filters">
+    <select [(ngModel)]="selectedGenre" (change)="onSearch()" class="filter-select">
+      <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
+    </select>
+
+    <select [(ngModel)]="selectedStore" (change)="onSearch()" class="filter-select">
+      <option *ngFor="let store of stores" [value]="store">{{ store }}</option>
+    </select>
+  </div>
+
+  <ul class="product-list">
+    <li *ngFor="let product of products$ | async" class="product-item">
+      <div>{{ product.title }}</div>
+      <div>{{ product.genre }}</div>
+      <div>{{ product.price }}円</div>
+    </li>
+  </ul>
+</div>
+
+
+<div>
+  <input [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="検索..." />
+  
+  <select [(ngModel)]="selectedGenre" (change)="onSearch()">
     <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
   </select>
-  
-  <select [(ngModel)]="selectedStore">
+
+  <select [(ngModel)]="selectedStore" (change)="onSearch()">
     <option *ngFor="let store of stores" [value]="store">{{ store }}</option>
   </select>
-  
-  <button (click)="onSearch()">検索</button>
+
+  <ul>
+    <li *ngFor="let product of products$ | async">
+      {{ product.title }} - {{ product.genre }} - {{ product.price }}円
+    </li>
+  </ul>
 </div>
+
 
 <div class="results">
   <div *ngFor="let product of products$ | async" class="result-card">

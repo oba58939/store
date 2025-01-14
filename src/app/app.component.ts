@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from './services/product.service';
 import { Observable } from 'rxjs';
 
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   products$: Observable<any[]>;
   searchQuery: string = '';
   selectedGenre: string = '書籍';  // 初期カテゴリー
@@ -16,6 +16,11 @@ export class AppComponent {
   stores: string[] = ['新宿店', '渋谷店'];  // 店舗リスト
 
   constructor(private productService: ProductService) {}
+
+  ngOnInit() {
+    // 初期データをロードする
+    this.onSearch();
+  }
 
   // 検索機能（カテゴリと店舗を含む）
   onSearch() {

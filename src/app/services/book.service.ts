@@ -18,13 +18,16 @@ export class ProductService {
   constructor(private firestore: AngularFirestore) {}
 
   // 商品情報の取得（カテゴリと店舗を指定して検索）
-  getProducts(query: string, genre: string, store: string): Observable<Product[]> {
-    return this.firestore.collection<Product>('products', ref => ref
+getProducts(query: string, genre: string, store: string): Observable<any[]> {
+  return this.firestore.collection('products', ref =>
+    ref
       .where('title', '>=', query)
-      .where('title', '<=', query + '\uf8ff')  // 曖昧検索用
-      .where('genre', '==', genre)  // カテゴリで絞り込み
-    ).valueChanges();
-  }
+      .where('title', '<=', query + '\uf8ff')
+      .where('genre', '==', genre)
+      .where(`stock.${store}`, '>', 0)  // 店舗ごとの在庫がある商品を検索
+  ).valueChanges();
+}
+
 
   // 商品情報の追加
   addProduct(product: Product): Promise<void> {
